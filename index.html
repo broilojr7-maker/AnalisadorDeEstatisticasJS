@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html>
+   
+    <head>
+        <title>Análise desempenho time</title>
+        <style>
+            body {
+                background-color: rgb(41, 47, 47);
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 20px;
+            } 
+            .container {
+                max-width: 1000px;
+                margin: 0 auto;
+                display: flex;
+            }
+            .container2 {
+                max-width: 1000px;
+                margin: 0 auto;
+                
+            }
+            h1 {
+                text-align: center;
+                color: white;
+            }
+            input {
+                width: 250px;
+                padding: 8px;
+                margin: 5px 0;
+                border-radius: 6px;
+                border: none;
+                color: rgb(3, 3, 3);
+            }
+            input:hover {
+                background-color: rgb(37, 214, 17);
+            }
+            button {
+                background-color: rgb(37, 214, 17);
+                color: rgb(0, 0, 0);
+                padding: 10px 15px;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                
+            }
+            button:hover {
+                background-color: #feffff;
+            }
+            .card {
+                background: rgb(0, 0, 0);
+                width: 350px;
+                color: white;
+                padding: 10px;
+                margin: auto;
+                border-radius: 15px;
+                
+            }
+            .card:hover {
+               cursor: pointer;
+               box-shadow: 0 0 10px;
+            }
+            .nomeCard {
+                font-family: Arial, Helvetica, sans-serif;
+                text-decoration: underline;
+                text-align: center;
+                background-color:rgb(37, 214, 17);
+                border: 1px solid white;
+                color: rgb(0, 0, 0);
+                font-size: 25px;
+               padding: 5px;
+               width: 340px;
+               margin: auto;
+               border-radius: 50px;
+
+            }
+            .cardEstatisticas {
+                font-family: Verdana;
+                padding: 10px;
+                text-align: center;
+                width: 300px;
+                border-radius: 20px;
+                margin: auto;
+                background-color: rgb(37, 214, 17);
+                color: rgb(0, 0, 0);
+                border: 1px solid rgb(255, 255, 255);
+              
+            }
+            .titulo1 {
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                text-align: center;
+                padding: 40px;
+                color: white;
+                
+
+            }
+            .alinharCards {
+                display: flex;
+
+            }
+            
+           
+        </style>
+    </head>
+    <body>
+ 
+        <h1>Análise e estatísticas Battle Royale</h1>
+     <div class="container2">
+    <div class="card" id="titulo1">
+    <div class="titulo1">
+          <p1>Quantidade de jogadores:</p1> <br> 
+
+        <input type="number" id="quantidadeJogadores" placeholder="Quantidade de jogadores"> <br>
+        <input type="number" id="totalQuedas" placeholder="Total quedas"> <br>
+
+        <button id="btnEnviar">
+            Enviar
+        </button>
+    </div></div>
+          <div class="card" id="titulo2">
+        <div  id="msgPedirDados"></div>
+  </div>
+
+  <div class="card" id="titulo3">
+        <div id="msgPedirDadosQueda"></div>
+    </div> 
+
+     <div id="titulo4">   <div  id="msgMostrarEstatisticas"></div></div>
+     
+</div> 
+ <div id="msgMostrarDadosTime"></div>
+
+        <script>
+          
+          function pegar(id) {
+            return document.getElementById(id);
+          }
+
+          // ids div
+          let divTitulo1 = pegar("titulo1");
+          let divTitulo2 = pegar("titulo2")
+          let divTitulo3 = pegar("titulo3");
+          let divTitulo4 = pegar("titulo4");
+
+          // esconder paginas
+          divTitulo2.style.display = "none";
+          divTitulo3.style.display = "none";
+          divTitulo4.style.display = "none";
+
+
+          // ids de mensagens
+          let msgPedirDados = pegar("msgPedirDados");
+          let msgPedirDadosQueda = pegar("msgPedirDadosQueda");
+          let msgMostrarEstatisticas = pegar("msgMostrarEstatisticas");
+          let msgMostrarDadosTime = pegar("msgMostrarDadosTime");
+          
+
+          // inputs
+
+          let inputQuantidadeJogadores = pegar("quantidadeJogadores");
+          let inputTotalQuedas = pegar("totalQuedas");
+          
+         // botoes
+
+         let btnEnviar = pegar("btnEnviar");
+
+          // ativar botões
+        inputTotalQuedas.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {             
+                enviar();
+            }
+        });
+        btnEnviar.addEventListener("click", enviar);
+        
+           
+        // guardar dados
+
+        let jogadores = [];
+        let posicoesQueda = [];
+        
+
+        let quantidadeJogadores = 0;
+        let totalQuedas = 0;
+        
+        // funções
+
+
+          function enviar() {
+            msgPedirDados.innerHTML = "";
+
+            quantidadeJogadores = Number((inputQuantidadeJogadores).value);
+            if (isNaN(quantidadeJogadores) || quantidadeJogadores <= 0 || quantidadeJogadores > 8) {
+                alert(`Digite quantidade jogadores maior que 0. (Máximo 8 jogadores)`);
+                return;
+            }
+
+            totalQuedas = Number((inputTotalQuedas).value);
+            if (isNaN(totalQuedas) || totalQuedas <= 0 || totalQuedas > 16) {
+                alert(`Digite total de quedas maior que 0. (Máximo 16 quedas)`);
+                return
+            }
+
+            for (let i = 1; i <= totalQuedas; i++) {
+                msgPedirDados.innerHTML += `<p>
+                    Posição queda ${i} <br>
+                    <input type="number" id="posicaoQueda${i}" placeholder="Posição queda ${i}">
+                    </p>`
+            }
+
+            for (let i = 0; i < quantidadeJogadores; i++) {
+                msgPedirDados.innerHTML += `<p>
+                Jogador ${i + 1}: <br>
+                <input id="nome${i}" placeholder="Nome jogador"> <br>
+                <input type="number" id="quedas${i}" placeholder="Quedas jogadas">
+                </p>`
+            }
+            msgPedirDados.innerHTML += `<p>
+                <button onclick="salvarDados()">
+                    Salvar dados
+                    </button>
+                </p>`
+            
+            inputTotalQuedas.value = "";
+            inputQuantidadeJogadores.value = "";
+            divTitulo1.style.display = "none";
+            divTitulo2.style.display = "block";
+            
+
+           
+          }
+              
+
+          function salvarDados() {
+             divTitulo2.style.display = "none";
+             divTitulo3.style.display = "block";
+ 
+             for (let i = 1; i <= totalQuedas; i++) { 
+                let posicaoQueda = Number(pegar("posicaoQueda" + i).value);
+                if (isNaN(posicaoQueda) || posicaoQueda <= 0 || posicaoQueda > 16 ) {
+                    alert(`Preencha todos campos ! (Top 1 a 16)` );
+                    return;
+                }
+
+                let pontosQueda = 0;
+                if (posicaoQueda === 1) {
+                    pontosQueda = 12;
+                } else if (posicaoQueda === 2) {
+                    pontosQueda = 9;
+                } else if (posicaoQueda === 3) {
+                    pontosQueda = 8;
+                } else if (posicaoQueda === 4) {
+                    pontosQueda = 7;
+                } else if (posicaoQueda === 5) {
+                    pontosQueda = 6;
+                } else if (posicaoQueda === 6) {
+                    pontosQueda = 5;
+                } else if ( posicaoQueda === 7) {
+                    pontosQueda = 4;
+                } else if (posicaoQueda === 8) {
+                    pontosQueda = 3;
+                } else if (posicaoQueda === 9) {
+                    pontosQueda = 2;
+                } else if (posicaoQueda === 10) {
+                    pontosQueda = 1;
+                } else {
+                    pontosQueda = 0;
+                }
+
+                let dadosPartida = {
+                    posicao: posicaoQueda,
+                    pontos: pontosQueda
+                };
+
+                posicoesQueda.push(dadosPartida);
+             }
+             console.log(posicoesQueda);
+
+            for (let i = 0; i < quantidadeJogadores; i++) {
+                let nome = pegar("nome" + i).value;
+                let quedas = Number(pegar("quedas" + i).value);
+                if (isNaN(quedas) || quedas <= 0 || quedas > 16) {
+                    alert(`Máximo 16 quedas`);
+                    return
+                }
+
+                let jogador = {
+                    nome,
+                    quedas,
+                    dadosQuedas: []
+                }
+                jogadores.push(jogador);
+            }
+            
+            msgPedirDadosQueda.innerHTML = "";
+
+          for (let i = 0; i < jogadores.length; i++) {
+            msgPedirDadosQueda.innerHTML += `<p>
+                    Dados ${jogadores[i].nome}: <br>
+                    </p>`
+            for (let q = 1; q <= jogadores[i].quedas; q++) {
+                msgPedirDadosQueda.innerHTML += `<p>
+                  Queda ${q}: <br>
+                  Kill: <input type="number" id="kill${i}${q}" placeholder="Kills queda ${q}"> <br>
+                  Dano: <input type="number" id="dano${i}${q}" placeholder="Dano queda ${q}"> <br>
+                  Assistência: <input type="number" id="assistencia${i}${q}" placeholder="Assistência queda ${q}"> <br>
+                  </p>  `
+            }
+          }
+           
+           msgPedirDadosQueda.innerHTML += `<p>
+                    <button onclick="calcularEstatisticas()">
+                        Calcular estatísticas 
+                        </button>
+                    </p>`;
+
+              msgPedirDados.style.display = "none";
+              
+          }
+         
+          function calcularEstatisticas() {
+            divTitulo3.style.display = "none";
+            divTitulo4.style.display = "block";
+            
+           
+            for (let i = 0; i < jogadores.length; i++) {
+                for (let j = 1; j <= jogadores[i].quedas; j++) {
+                    let queda = Number(j);
+                    let killQueda = Number(pegar("kill" + i + j).value);
+                    let danoQueda = Number(pegar("dano" + i + j).value);
+                    let assistenciaQueda = Number(pegar("assistencia" + i + j).value);
+
+                    let dadosPartida = {
+                        queda: j,
+                        killQueda: killQueda,
+                        danoQueda: danoQueda,
+                        assistenciaQueda: assistenciaQueda
+                    };
+
+                    jogadores[i].dadosQuedas.push(dadosPartida);
+ 
+                    
+                }
+            }
+               
+            jogadores.forEach(jogador => {
+                 let totalKills = jogador.dadosQuedas.reduce((soma, kill) => {
+                    return soma + kill.killQueda;
+                 }, 0);
+                 let totalDano = jogador.dadosQuedas.reduce((soma, dano) => {
+                    return soma + dano.danoQueda;
+                 }, 0);
+                 let totalAssistencias = jogador.dadosQuedas.reduce((soma, assistencia) => {
+                    return soma + assistencia.assistenciaQueda;
+                 }, 0);
+
+                 let mediaKill = totalKills / jogador.quedas;
+                 let mediaDano = totalDano / jogador.quedas;
+                 let mediaAssistencia = totalAssistencias / jogador.quedas;
+
+                 let totalParticipacoes = totalKills + totalAssistencias;
+                 let mediaParticipacao = totalParticipacoes / jogador.quedas;
+
+                 let melhorParticipacaoQueda = 0;
+                 let piorParticipacaoQueda = Infinity;
+                 let melhorQueda = "";
+                 let piorQueda = "";
+
+                 for (let i = 0; i < jogador.dadosQuedas.length; i++) {
+                    let killQueda = jogador.dadosQuedas[i].killQueda;
+                    let assistenciaQueda = jogador.dadosQuedas[i].assistenciaQueda;
+                    let participacaoQueda = killQueda + assistenciaQueda;
+
+                    if (participacaoQueda > melhorParticipacaoQueda) {
+                        melhorParticipacaoQueda = participacaoQueda;
+                        melhorQueda = jogador.dadosQuedas[i].queda;
+                    }
+                    if (participacaoQueda < piorParticipacaoQueda) {
+                        piorParticipacaoQueda = participacaoQueda;
+                        piorQueda = jogador.dadosQuedas[i].queda;
+                    } 
+                    
+                 }
+                 
+
+                msgMostrarEstatisticas.innerHTML += ` <div class="conteiner">
+                  
+                <div class="card"> 
+                   <div class="nomeCard"> Estatísticas jogador: ${jogador.nome}  </div> <br>
+                    <div class="cardEstatisticas">💀 Total kills: ${totalKills} </div> <br>
+                    <div class="cardEstatisticas">💥 Total dano: ${totalDano} </div> <br>
+                   <div class="cardEstatisticas">🤝 Total assistências: ${totalAssistencias} </div> <br>
+                    <div class="cardEstatisticas">🎯 Total participações: ${totalParticipacoes} </div> <br>
+                    <div class="cardEstatisticas">🪂 Total quedas: ${jogador.quedas} </div> <br><br>
+                                                      
+                   <div class="nomeCard">   Médias de ${jogador.nome} </div> <br>
+                    <div class="cardEstatisticas">💀 K/d: ${mediaKill.toFixed(2)} </div> <br>
+                   <div class="cardEstatisticas">💥 Média dano: ${mediaDano.toFixed(2)} </div> <br>
+                   <div class="cardEstatisticas">🤝 Média assitência: ${mediaAssistencia.toFixed(2)} </div> <br>
+                   <div class="cardEstatisticas">🎯 Média participações: ${mediaParticipacao.toFixed(2)} </div> <br><br>
+                                                   
+                     <div class="nomeCard">   Destaques de ${jogador.nome} </div> <br>
+                   <div class="cardEstatisticas">🚀 Melhor queda: ${melhorQueda} </div> <br> 
+                  <div class="cardEstatisticas"> 🚀 Participação melhor queda: ${melhorParticipacaoQueda} </div><br><br>
+
+                 <div class="cardEstatisticas">👎  Pior queda: Queda ${piorQueda} </div> <br>
+                 <div class="cardEstatisticas"> 👎 Participação pior queda: ${piorParticipacaoQueda} </div> <br><br>
+                    
+                    </div>
+                 
+                    </div>
+                    
+                   `;
+
+                    
+            })
+                    msgMostrarEstatisticas.innerHTML += `<div class="card"> <p>
+                        <button onclick="dadosTime()">
+                            Calcular dados da equipe
+                            </button>
+                        </p> </div>`;
+
+
+              
+           console.log(jogadores) 
+          }
+
+          function dadosTime() {
+      
+            divTitulo4.style.display = "block";
+
+            msgMostrarDadosTime.innerHTML = ""; 
+
+            let totalKillsTime = 0;
+            let totalDanoTime = 0;
+            let totalAssistenciasTime = 0;
+            let totalQuedasTime = totalQuedas;
+            let totalPontosPosicaoTime = posicoesQueda.reduce((soma, posicao) => {
+                return soma + posicao.pontos;
+            }, 0);
+
+
+            
+             let mvp = "";
+             let killsMvp = 0;
+             let danoMvp = 0;
+             let assistenciaMvp = 0;
+            for (let i = 0; i < jogadores.length; i++) {
+                let totalKillJogador = jogadores[i].dadosQuedas.reduce((soma, kill) => {
+                    return soma + kill.killQueda;
+                }, 0);
+
+                let totalDanoJogador = jogadores[i].dadosQuedas.reduce((soma, dano) => {
+                    return soma + dano.danoQueda;
+                }, 0);
+
+                let totalAssistenciaJogador = jogadores[i].dadosQuedas.reduce((soma, assistencia) => {
+                    return soma + assistencia.assistenciaQueda;
+                }, 0);
+
+                if (totalKillJogador > killsMvp) {
+                    killsMvp = totalKillJogador;
+                    mvp = jogadores[i].nome;
+                    danoMvp = totalDanoJogador;
+                    assistenciaMvp = totalAssistenciaJogador;
+                }
+
+               
+
+                totalKillsTime += totalKillJogador;
+                totalDanoTime += totalDanoJogador;
+                totalAssistenciasTime += totalAssistenciaJogador;
+                
+            }
+
+            
+
+
+            
+
+            let totalPontosTime = totalKillsTime + totalPontosPosicaoTime;
+
+            let mediaKillsTime = totalKillsTime / totalQuedasTime;
+            let mediaDanoTime = totalDanoTime / totalQuedasTime;
+            let mediaPontosTime = totalPontosTime / totalQuedasTime;
+            let mediaPontosPosicaoTime = totalPontosPosicaoTime / totalQuedasTime;
+
+            msgMostrarDadosTime.innerHTML += `
+            <div class="card">
+                  <div class="nomeCard"> Estatísticas Geral da Equipe </div>
+            <p>
+               <div class="cardEstatisticas"> Total kills: ${totalKillsTime} </div> <br>
+              <div class="cardEstatisticas">  Média kills: ${mediaKillsTime}  </div> <br> <br>
+
+             <div class="cardEstatisticas">   Total dano: ${totalDanoTime}  </div> <br>
+              <div class="cardEstatisticas">  Média dano: ${mediaDanoTime} </div> <br> <br>
+
+               <div class="cardEstatisticas"> Total assistência: ${totalAssistenciasTime} </div> <br>
+              <div class="cardEstatisticas">  Total quedas: ${totalQuedasTime} </div> <br>
+              <div class="cardEstatisticas">  Total pontos queda: ${totalPontosPosicaoTime} </div> <br>
+             <div class="cardEstatisticas">   Média pontos por queda: ${mediaPontosPosicaoTime} </div><br> <br>
+
+             <div class="cardEstatisticas">   Total pontos: ${totalPontosTime} </div><br>
+             <div class="cardEstatisticas">  Média de pontos: ${mediaPontosTime} </div><br> <br>
+
+             <div class="nomeCard">   Mvp: ${mvp} </div><br>
+            <div class="cardEstatisticas">    Kills: ${killsMvp} </div><br>
+            <div class="cardEstatisticas">    Dano: ${danoMvp} </div><br>
+             <div class="cardEstatisticas">   Assistências: ${assistenciaMvp}</div>
+</p>
+                </div>
+                `
+
+                
+
+          } 
+          
+
+              
+
+        </script>
+    </body>
+</html>
