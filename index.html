@@ -224,6 +224,7 @@
             inputQuantidadeJogadores.value = "";
             divTitulo1.style.display = "none";
             divTitulo2.style.display = "block";
+            divTitulo3.style.display = "none";
             
 
            
@@ -232,7 +233,7 @@
 
           function salvarDados() {
              divTitulo2.style.display = "none";
-             divTitulo3.style.display = "block";
+            
  
              for (let i = 1; i <= totalQuedas; i++) { 
                 let posicaoQueda = Number(pegar("posicaoQueda" + i).value);
@@ -314,6 +315,7 @@
                     </p>`;
 
               msgPedirDados.style.display = "none";
+             divTitulo2.style.display = "none";
               
           }
          
