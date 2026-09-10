@@ -225,15 +225,14 @@
             divTitulo1.style.display = "none";
             divTitulo2.style.display = "block";
             divTitulo3.style.display = "none";
-            
 
            
           }
               
 
           function salvarDados() {
-             divTitulo2.style.display = "none";
-            
+             
+             divTitulo3.style.display = "block";
  
              for (let i = 1; i <= totalQuedas; i++) { 
                 let posicaoQueda = Number(pegar("posicaoQueda" + i).value);
@@ -281,7 +280,7 @@
                 let quedas = Number(pegar("quedas" + i).value);
                 if (isNaN(quedas) || quedas <= 0 || quedas > 16) {
                     alert(`Máximo 16 quedas`);
-                    return
+                    return;
                 }
 
                 let jogador = {
@@ -315,7 +314,7 @@
                     </p>`;
 
               msgPedirDados.style.display = "none";
-             divTitulo2.style.display = "none";
+              divTitulo2.style.display = "none";
               
           }
          
